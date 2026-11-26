@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<title>Para ti</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#17142e">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&display=swap">
+<style>
+:root{
+  --night:#17142e; --dusk:#241b45; --glow:#f2a6c0; --cream:#fff4e8; --lav:#cdbcff; --lav-d:#a88df0; --mint:#a6e6cb; --pill:#2a2152;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --out:cubic-bezier(.16,1,.3,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--night);color:var(--cream);font-family:var(--serif);overflow:hidden;-webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(120% 70% at 50% 118%,rgba(242,166,192,.42),transparent 62%),
+    radial-gradient(70% 55% at 12% -5%,rgba(124,104,230,.38),transparent 62%),
+    linear-gradient(#15122b,var(--dusk) 58%,#38285f)}
+#sky{position:fixed;inset:0;width:100%;height:100%;display:block}
+main{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(84px,14vh,140px);padding:24px 20px calc(24px + env(safe-area-inset-bottom))}
+
+/* la frase: cada letra sube desde abajo, sale del desenfoque y se asienta */
+h1{margin:0;text-align:center;text-wrap:balance;font-style:italic;font-weight:340;font-size:clamp(52px,14vw,108px);line-height:1.04;letter-spacing:-.022em;
+  font-optical-sizing:auto;font-variation-settings:"SOFT" 100,"WONK" 1;text-shadow:0 0 46px rgba(205,188,255,.32);max-width:14ch}
+.w{display:inline-block;white-space:nowrap}
+.ch{display:inline-block;opacity:0;will-change:transform,opacity,filter}
+.go-intro .ch{animation:rise 1.25s var(--out) forwards;animation-delay:var(--d)}
+.go-intro .last .ch{animation:land 1.7s var(--spring) forwards;animation-delay:var(--d)}
+.skip .ch,.reduce .ch{animation:none!important;opacity:1;transform:none;filter:none}
+@keyframes rise{0%{opacity:0;transform:translateY(.6em) rotate(6deg) scale(.94);filter:blur(16px)}55%{filter:blur(0)}100%{opacity:1;transform:none;filter:blur(0)}}
+@keyframes land{0%{opacity:0;transform:translateY(.75em) scale(.55);filter:blur(18px)}45%{opacity:1;filter:blur(0)}100%{opacity:1;transform:none;filter:blur(0)}}
+.glowpulse{animation:gp 1.8s ease-out}
+@keyframes gp{40%{text-shadow:0 0 70px rgba(242,166,192,.7),0 0 14px rgba(255,244,232,.45)}}
+
+/* la contraseña: aparece después de la frase, con Stitch asomando por encima */
+.field{position:relative;width:min(340px,86vw);opacity:0;transform:translateY(22px);filter:blur(8px);pointer-events:none}
+.ready .field{opacity:1;transform:none;filter:none;pointer-events:auto;transition:opacity 1s var(--out),transform 1.1s var(--out),filter 1s var(--out)}
+.peek{position:absolute;left:0;right:0;bottom:calc(100% - 36px);height:112px;overflow:hidden;display:flex;justify-content:center;align-items:flex-end;pointer-events:none}
+.peek img{width:116px;height:116px;display:block;transform:translateY(105%);margin-bottom:-6px}
+.ready .peek img{transform:none;transition:transform 1.2s var(--spring) .45s}
+.peek.bob img{animation:bob 4.6s ease-in-out infinite}
+.peek.nope img{animation:nope .55s ease-in-out}
+.peek.cheer img{animation:cheer .8s var(--spring)}
+@keyframes bob{50%{transform:translateY(-5px) rotate(-1.5deg)}}
+@keyframes nope{20%{transform:rotate(-7deg)}45%{transform:rotate(6deg)}70%{transform:rotate(-4deg)}}
+@keyframes cheer{40%{transform:translateY(-12px) scale(1.04)}}
+.pill{position:relative;z-index:1;display:flex;align-items:center;height:60px;padding:0 26px;border-radius:999px;background:var(--pill);border:1.5px solid rgba(205,188,255,.32);overflow:hidden;
+  box-shadow:0 24px 50px -22px rgba(0,0,0,.7),0 0 0 0 rgba(205,188,255,0);transition:border-color .3s,box-shadow .4s}
+.pill:focus-within{border-color:rgba(205,188,255,.75);box-shadow:0 24px 50px -22px rgba(0,0,0,.7),0 0 0 5px rgba(168,141,240,.18),0 0 34px rgba(168,141,240,.28)}
+.pill.bad{border-color:rgba(242,130,160,.9);animation:shake .5s}
+@keyframes shake{15%{transform:translateX(-9px)}35%{transform:translateX(8px)}55%{transform:translateX(-6px)}75%{transform:translateX(4px)}}
+.fill{position:absolute;inset:0;width:0;background:linear-gradient(90deg,rgba(166,230,203,.28),rgba(205,188,255,.5) 70%,rgba(242,166,192,.55));transition:width .35s ease-out}
+.busy .fill.wait{animation:wait 1.1s ease-in-out infinite}
+@keyframes wait{0%,100%{width:6%}50%{width:20%}}
+input{position:relative;flex:1;min-width:0;height:100%;background:none;border:0;outline:0;color:var(--cream);font:inherit;font-size:19px;letter-spacing:.3em;text-align:center;padding:0;transition:opacity .3s}
+input::selection{background:rgba(205,188,255,.35);color:var(--cream)}
+input::placeholder{color:rgba(255,244,232,.46);font-style:italic;letter-spacing:.04em}
+.busy input{opacity:0}
+.done .pill{cursor:pointer}.done input{pointer-events:none}
+.note{position:absolute;left:0;right:0;top:calc(100% + 14px);text-align:center;font-style:italic;font-size:15px;color:rgba(255,244,232,.62);opacity:0;transform:translateY(-4px);transition:opacity .4s,transform .4s;pointer-events:none}
+.note.show{opacity:1;transform:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.field,.peek img{transition:none!important}.peek.bob img{animation:none}}
+
+/* ---------- tras la contraseña: el sobre se abre y se lee la carta mientras se descarga ---------- */
+main{transition:opacity .9s ease,transform .9s var(--out),filter .9s ease}
+.reading main{opacity:0;transform:scale(.96);filter:blur(8px);pointer-events:none}
+#show{position:fixed;inset:0;z-index:2;pointer-events:none}
+#stage{position:absolute;left:50%;top:calc(50% - 34px);width:0;height:0;transform:scale(var(--k,1))}
+.env{position:absolute;left:-190px;top:-125px;width:380px;height:250px;opacity:0;transform:translateY(120vh) rotate(-8deg)}
+.env.in,.env.float{opacity:1;transform:translateY(0) rotate(-2deg)}
+.env.in{animation:envIn 1.5s cubic-bezier(.18,.9,.22,1.04) forwards}
+.env.float{animation:envBob 4.2s ease-in-out infinite}
+.env.out{animation:envOut .9s cubic-bezier(.5,0,.8,.4) forwards}
+@keyframes envIn{0%{opacity:0;transform:translateY(120vh) rotate(-8deg)}60%{opacity:1}100%{opacity:1;transform:translateY(0) rotate(-2deg)}}
+@keyframes envBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(-1deg)}}
+@keyframes envOut{from{opacity:1;transform:translateY(0) rotate(-1deg)}to{opacity:0;transform:translateY(60vh) rotate(5deg)}}
+.env>*{position:absolute;inset:0}
+.env .back{background:#1d2f78;border-radius:10px;box-shadow:0 30px 60px -12px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06) inset}
+.env .card{z-index:1;inset:14px 20px auto 20px;height:220px;background:#f1e2bd;border-radius:6px;transition:transform 1.1s cubic-bezier(.3,.8,.25,1);
+  background-image:repeating-linear-gradient(transparent 0 25px,rgba(120,85,40,.16) 25px 26px);box-shadow:0 -2px 10px rgba(0,0,0,.2)}
+.env.up .card{transform:translateY(-175px)}
+.env .pocket{z-index:2;clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);background:linear-gradient(160deg,#3f5fc4,#2c4399);border-radius:10px}
+.env .pocket::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.12),transparent 40%)}
+.env .to{inset:auto 0 34px 0;z-index:4;text-align:center;font-size:27px;font-style:italic;color:#f6ead0;text-shadow:0 2px 0 rgba(0,0,0,.25);opacity:0;transition:opacity 1s ease .6s}
+.env.in .to{opacity:1}.env.open .to{opacity:0;transition:opacity .3s}
+.env .flap{z-index:3;inset:0 0 auto 0;height:140px;transform-origin:50% 0;transition:transform 1s cubic-bezier(.4,0,.2,1)}
+.env .flap i{position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 100%);backface-visibility:hidden;border-radius:10px 10px 0 0}
+.env .flap .fo{background:linear-gradient(180deg,#5578dc,#3f5fc4)}
+.env .flap .fi{background:linear-gradient(180deg,#1a2a70,#26398a);transform:rotateX(180deg)}
+.env.open .flap{transform:rotateX(180deg);z-index:0;transition:transform 1s cubic-bezier(.4,0,.2,1),z-index 0s .35s}
+.env .seal{z-index:5;left:50%;top:104px;width:56px;height:56px;right:auto;bottom:auto;margin-left:-28px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%,#ff9fb4,#e0557a 70%);box-shadow:0 5px 12px rgba(0,0,0,.45),inset 0 -4px 8px rgba(120,20,50,.45);opacity:0;transform:scale(.2);transition:transform .5s,opacity .35s}
+.env.in .seal{opacity:1;transform:scale(1);transition-delay:.9s}
+.env .seal svg{width:26px;height:26px;fill:#ffe6ee}
+.env.beat .seal{animation:beat .9s ease-in-out 2}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.22)}60%{transform:scale(.96)}}
+.env.open .seal{transform:scale(1.9);opacity:0;transition:transform .5s,opacity .5s}
+.heart{position:fixed;width:18px;height:18px;margin:-9px;pointer-events:none;opacity:0;fill:#f2a6c0;z-index:3}
+#paper{position:absolute;left:50%;top:calc(50% - 34px);width:min(720px,92vw);height:min(76vh,860px);transform:translate(-50%,-50%) translateY(110vh);opacity:0;background:#f1e2bd;border-radius:8px;
+  box-shadow:0 40px 90px -10px rgba(0,0,0,.65),0 0 0 1px rgba(90,60,20,.25);overflow:hidden;pointer-events:none;color:#4a3320}
+#paper.show{pointer-events:auto;animation:paperIn 1.15s cubic-bezier(.18,.9,.25,1.02) forwards}
+@keyframes paperIn{0%{opacity:0;transform:translate(-50%,-50%) translateY(40vh) scale(.42) rotate(-4deg)}35%{opacity:1}100%{opacity:1;transform:translate(-50%,-50%)}}
+#paper .vig{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 80px rgba(125,85,35,.42),inset 0 0 14px rgba(90,60,20,.35);background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.3),transparent 55%)}
+#sheet{position:absolute;inset:0;overflow:auto;padding:clamp(28px,5vw,44px) clamp(22px,7vw,64px) 48px;font-size:clamp(16px,2.2vw,19px);line-height:1.75;font-weight:400;scrollbar-width:thin;scrollbar-color:#cdb27c transparent;outline:none;-webkit-overflow-scrolling:touch}
+#sheet h1{font-size:clamp(32px,6vw,44px);max-width:none;text-align:left;line-height:1.15;margin:0 0 .6em;color:#5b3a78;text-shadow:none;font-weight:420}
+#sheet p{margin:0 0 1.05em}
+#sheet hr{border:0;margin:1.4em auto;width:90px;height:14px;background:radial-gradient(circle,rgba(217,142,166,.9) 2px,transparent 2.6px) center/30px 14px repeat-x}
+.rv{opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}.rv.in{opacity:1;transform:none}
+#dl{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));z-index:3;width:min(440px,92vw);height:52px;transform:translate(-50%,90px);opacity:0;border-radius:999px;overflow:hidden;
+  background:var(--pill);border:1.5px solid rgba(205,188,255,.32);box-shadow:0 18px 40px -16px rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:16px;font-style:italic;color:var(--cream);transition:transform .9s var(--out),opacity .6s}
+#dl.on{transform:translate(-50%,0);opacity:1}
+#dl .bar{position:absolute;inset:0;width:6%;background:linear-gradient(90deg,rgba(166,230,203,.28),rgba(205,188,255,.5) 70%,rgba(242,166,192,.55));transition:width .35s ease-out}
+#dl span,#dl button{position:relative}
+#dl button{font:inherit;font-style:normal;font-size:15px;color:var(--night);background:var(--cream);border:0;border-radius:999px;padding:7px 16px;cursor:pointer}
+#dl button:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
+#dl.done .bar{width:100%!important;background:rgba(166,230,203,.22)}
+@media (prefers-reduced-motion:reduce){.env.in,.env.float,.env.out,#paper.show{animation-duration:.01s!important}.rv{transition:none}}
+
+#choice{position:fixed;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .8s var(--out),transform .9s var(--out)}
+#choice.on{opacity:1;pointer-events:auto;transform:none}
+.act{font:inherit;font-size:20px;font-style:italic;color:var(--cream);width:min(340px,86vw);height:60px;border-radius:999px;cursor:pointer;background:var(--pill);border:1.5px solid rgba(205,188,255,.32);box-shadow:0 24px 50px -22px rgba(0,0,0,.7);transition:transform .25s var(--spring),border-color .3s,box-shadow .3s}
+.act.big{background:linear-gradient(135deg,#6f8bf0,#a88df0 55%,#f2a6c0);border-color:transparent;color:#fff;box-shadow:0 18px 44px -14px rgba(168,141,240,.7)}
+.act:hover:not(:disabled){transform:translateY(-3px)}.act:disabled{opacity:.75;cursor:default}
+.act:focus-visible{outline:3px solid var(--lav);outline-offset:3px}
+#pclose{position:absolute;top:12px;right:14px;width:36px;height:36px;border:0;border-radius:50%;cursor:pointer;color:#fff;font-size:16px;background:linear-gradient(135deg,#b49cf2,#ff9db0);box-shadow:0 3px 8px -2px rgba(94,62,120,.5);z-index:3}
+#pclose:focus-visible{outline:3px solid #7f95f0;outline-offset:2px}
+#paper.hide{animation:paperOut .7s cubic-bezier(.5,0,.8,.4) forwards}
+@keyframes paperOut{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-50%) translateY(70vh) rotate(3deg)}}
+#dl button[hidden]{display:none}
+#dl:not(.run):not(.done) .bar{width:0!important}
+
+#choice{position:fixed;inset:auto 0 auto 0;bottom:max(7vh,calc(24px + env(safe-area-inset-bottom)));z-index:3;display:flex;justify-content:center;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .8s var(--out),transform .9s var(--out)}
+#choice.on{opacity:1;pointer-events:auto;transform:none}
+.dlw{position:relative;width:min(340px,86vw)}
+.dlw .peek img{transform:none}
+.dlw .act{width:100%;position:relative;z-index:1}
+.dlw .peek{z-index:0;bottom:calc(100% - 24px)}
+.dlw .peek.cheer img{animation:cheer .8s var(--spring)}
+#show.choosing #stage{top:36%}
+#bEnv{position:absolute;left:-190px;top:-125px;width:380px;height:250px;padding:0;border:0;background:none;border-radius:12px;cursor:pointer;pointer-events:none;z-index:6;-webkit-tap-highlight-color:transparent}
+#show.choosing #bEnv{pointer-events:auto}
+#bEnv:focus-visible{outline:3px solid var(--lav);outline-offset:8px}
+#show.choosing .env.float{filter:drop-shadow(0 0 26px rgba(168,141,240,.35))}
+#show.choosing #bEnv:hover~.env{filter:drop-shadow(0 0 34px rgba(242,166,192,.55)) brightness(1.1)}
+#stage{transition:top .9s var(--out)}
+#hint{position:absolute;left:-190px;width:380px;top:150px;text-align:center;font-style:italic;font-size:17px;color:rgba(255,244,232,.6);opacity:0;transition:opacity .8s 1.2s}
+#show.choosing #hint{opacity:1}
+</style></head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<main>
+  <h1 id="t">Tengo algo para ti</h1>
+  <form class="field" id="f" autocomplete="off">
+    <div class="peek" id="peek" aria-hidden="true"><img src="icon.png" alt=""></div>
+    <div class="pill" id="pill">
+      <div class="fill" id="fill"></div>
+      <input id="pw" type="password" placeholder="Contraseña" aria-label="Contraseña" enterkeyhint="go" required>
+    </div>
+    <div class="note" id="note"></div>
+  </form>
+  <div class="sr" id="live" role="status" aria-live="polite"></div>
+</main>
+<div id="show">
+  <div id="stage"><button type="button" id="bEnv" aria-label="Abrir la carta" tabindex="-1"></button><div id="hint" aria-hidden="true">puedes leerla ahora o más tarde, cuando quieras</div><div class="env" id="env" aria-hidden="true"><div class="back"></div><div class="card"></div><div class="pocket"></div>    <div class="flap"><i class="fi"></i><i class="fo"></i></div></div></div>
+  <article id="paper" aria-label="Carta para ti"><div class="vig"></div><div id="sheet" tabindex="0"></div><button type="button" id="pclose" aria-label="Cerrar la carta">✕</button></article>
+</div>
+<div id="choice"><div class="dlw"><div class="peek bob" id="peek2" aria-hidden="true"><img src="icon.png" alt=""></div><button type="button" class="act big" id="bDl">Descargar el programa</button></div></div>
+<div id="dl" role="status"><div class="bar" id="bar"></div><span id="dltxt">Descargando tu regalo…</span><button type="button" id="again" hidden>Descargar otra vez</button></div>
+<script>
+const $ = (id) => document.getElementById(id), te = new TextEncoder();
+const rand = (a, b) => a + Math.random() * (b - a);
+const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ---------- cielo: estrellas que titilan, estrella fugaz y destellos ---------- */
+const cv = $('sky'), cx = cv.getContext('2d');
+let W = 0, H = 0, stars = [], parts = [], skyA = 0, t0 = performance.now();
+function size() {
+  const d = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0);
+  stars = Array.from({ length: Math.round(W * H / 9000) + 40 }, () => ({ x: rand(0, W), y: rand(0, H * 0.92), r: rand(.35, 1.4), p: rand(0, 7), s: rand(.5, 1.6), a: rand(.35, .95) }));
+}
+addEventListener('resize', size); size();
+function sparkle(x, y, s, a) {            // estrella de 4 puntas
+  cx.save(); cx.translate(x, y); cx.globalAlpha = a; cx.fillStyle = '#fff4e8'; cx.shadowColor = 'rgba(242,166,192,.9)'; cx.shadowBlur = s * 1.6;
+  cx.beginPath(); cx.moveTo(0, -s); cx.quadraticCurveTo(s * .14, -s * .14, s, 0); cx.quadraticCurveTo(s * .14, s * .14, 0, s); cx.quadraticCurveTo(-s * .14, s * .14, -s, 0); cx.quadraticCurveTo(-s * .14, -s * .14, 0, -s); cx.fill(); cx.restore();
+}
+function burst(x, y, n, power) {
+  for (let i = 0; i < n; i++) { const an = rand(0, 6.283), v = rand(.25, 1) * power; parts.push({ k: 's', x, y, vx: Math.cos(an) * v, vy: Math.sin(an) * v - power * .12, life: 0, max: rand(.9, 1.7), s: rand(4, 11) }); }
+}
+function shoot() { const x = rand(W * .55, W * .95), y = rand(H * .04, H * .22); parts.push({ k: 'm', x, y, vx: -W * .85, vy: W * .34, life: 0, max: 1 }); }
+let last = performance.now();
+function sky(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now; skyA = Math.min(1, skyA + dt / 2.2);
+  cx.clearRect(0, 0, W, H);
+  for (const s of stars) { const tw = reduce ? 1 : .55 + .45 * Math.sin(now / 1000 * s.s + s.p); cx.globalAlpha = skyA * s.a * tw; cx.fillStyle = '#fff4e8'; cx.beginPath(); cx.arc(s.x, s.y, s.r, 0, 6.283); cx.fill(); }
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i]; p.life += dt; const k = p.life / p.max; if (k >= 1) { parts.splice(i, 1); continue; }
+    if (p.k === 'm') {                    // estrella fugaz
+      p.x += p.vx * dt; p.y += p.vy * dt; const len = 150, a = Math.sin(k * Math.PI), g = cx.createLinearGradient(p.x, p.y, p.x - p.vx / 900 * len, p.y - p.vy / 900 * len);
+      g.addColorStop(0, `rgba(255,244,232,${a})`); g.addColorStop(1, 'rgba(255,244,232,0)'); cx.globalAlpha = 1; cx.strokeStyle = g; cx.lineWidth = 2; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(p.x, p.y); cx.lineTo(p.x - p.vx / 900 * len, p.y - p.vy / 900 * len); cx.stroke();
+    } else {                              // destello
+      p.vx *= 1 - dt * 1.6; p.vy = p.vy * (1 - dt * 1.6) + dt * 40; p.x += p.vx * dt; p.y += p.vy * dt;
+      sparkle(p.x, p.y, p.s * (1 - k * .5), Math.sin(Math.min(1, k * 1.15) * Math.PI) * .95);
+    }
+  }
+  cx.globalAlpha = 1; requestAnimationFrame(sky);
+}
+requestAnimationFrame(sky);
+
+/* ---------- la presentación ---------- */
+const root = document.body, h1 = $('t'), live = $('live'), timers = [];
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+let phase = 'intro';
+function ready(skipped) {
+  if (phase !== 'intro') return; phase = 'ready'; timers.forEach(clearTimeout);
+  if (skipped) root.classList.add('skip');
+  root.classList.add('ready');
+  later(() => { $('peek').classList.add('bob'); if (!matchMedia('(pointer:coarse)').matches) $('pw').focus({ preventScroll: true }); }, skipped || reduce ? 300 : 1900);
+}
+function intro() {
+  const words = h1.textContent.trim().split(/\s+/); h1.setAttribute('aria-label', h1.textContent.trim()); h1.textContent = '';
+  let t = 1.1, lastAt = 0;
+  words.forEach((w, wi) => {
+    const isLast = wi === words.length - 1; if (isLast) { t += .5; lastAt = t; }
+    const ws = document.createElement('span'); ws.className = 'w' + (isLast ? ' last' : ''); ws.setAttribute('aria-hidden', 'true'); ws.id = isLast ? 'wlast' : '';
+    for (const c of w) { const ch = document.createElement('span'); ch.className = 'ch'; ch.textContent = c; ch.style.setProperty('--d', t.toFixed(3) + 's'); ws.appendChild(ch); t += isLast ? .09 : .062; }
+    h1.appendChild(ws); if (!isLast) h1.appendChild(document.createTextNode(' ')); t += .24;
+  });
+  if (reduce) { root.classList.add('reduce'); ready(true); return; }
+  root.classList.add('go-intro');
+  later(shoot, 250);
+  later(() => { const r = $('wlast').getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 26, Math.max(160, Math.min(W, 900) * .32)); h1.classList.add('glowpulse'); }, (lastAt + .55) * 1000);
+  later(() => ready(false), (lastAt + 1.45) * 1000);
+}
+const skip = () => { if (phase === 'intro') ready(true); };
+addEventListener('pointerdown', skip); addEventListener('keydown', skip);
+Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1800))]).then(() => requestAnimationFrame(intro));
+
+/* ---------- descarga: misma cifra que release/crypto.js y desktop/updater.js ---------- */
+const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const dv = (u8) => new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+let last_url = null;
+async function unlock(password) {
+  const w = await (await fetch('key.json', { cache: 'no-store' })).json();
+  const base = await crypto.subtle.importKey('raw', te.encode(password.normalize('NFKC')), 'PBKDF2', false, ['deriveKey']);
+  const kek = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(w.salt), iterations: w.iter, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  const raw = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(w.iv) }, kek, b64(w.ct));   // falla si la contraseña no es la correcta
+  return crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['decrypt']);
+}
+async function download(key, onp) {
+  const u = await (await fetch('updates.json?t=' + Date.now(), { cache: 'no-store' })).json(), chunks = []; let got = 0;
+  for (const p of u.parts) {
+    const reader = (await fetch('parts/' + p)).body.getReader();
+    for (;;) { const { done, value } = await reader.read(); if (done) break; chunks.push(value); got += value.length; onp(got / u.size * .94); }
+  }
+  const blob = new Blob(chunks); let pos = 0;
+  const read = async (n) => { const b = new Uint8Array(await blob.slice(pos, pos + n).arrayBuffer()); if (b.length !== n) throw new Error('truncado'); pos += n; return b; };
+  if (new TextDecoder().decode(await read(5)) !== 'STCH1') throw new Error('formato');
+  const ver = new TextDecoder().decode(await read(dv(await read(2)).getUint16(0))), total = dv(await read(4)).getUint32(0), out = [];
+  for (let i = 0; i < total; i++) {
+    const iv = await read(12), ct = await read(dv(await read(4)).getUint32(0));
+    out.push(await crypto.subtle.decrypt({ name: 'AES-GCM', iv, additionalData: te.encode(`${ver}|${i}|${total}`) }, key, ct));
+    onp(.94 + .06 * (i + 1) / total);
+  }
+  return new Blob(out, { type: 'application/vnd.microsoft.portable-executable' });
+}
+function save() { const a = document.createElement('a'); a.href = last_url; a.download = 'Stitch-Setup.exe'; document.body.appendChild(a); a.click(); a.remove(); }
+const note = (t) => { $('note').textContent = t; $('note').classList.toggle('show', !!t); live.textContent = t; };
+function fail(msg, wrong) {
+  const pill = $('pill'); root.classList.remove('busy'); $('fill').style.width = '0'; $('pw').disabled = false; $('pw').select();
+  pill.classList.remove('bad'); void pill.offsetWidth; pill.classList.add('bad');
+  const pk = $('peek'); pk.classList.remove('bob', 'nope'); void pk.offsetWidth; pk.classList.add('nope'); setTimeout(() => { pk.classList.remove('nope'); pk.classList.add('bob'); }, 700);
+  note(msg); live.textContent = wrong ? 'Contraseña incorrecta' : msg;
+  if (msg) setTimeout(() => note(''), 3500);
+}
+/* ---------- la carta: un sobre que se abre mientras se descarga ---------- */
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const inl = (s) => esc(s).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+function renderLetter(body) {
+  const out = []; let para = [];
+  const flush = () => { if (para.length) { out.push('<p class="rv">' + para.map(inl).join('<br>') + '</p>'); para = []; } };
+  for (const raw of body.replace(/\r/g, '').split('\n')) {
+    const l = raw.trimEnd(), m = /^(#{1,3})\s+(.*)$/.exec(l);
+    if (!l.trim()) flush(); else if (m) { flush(); out.push('<h1 class="rv">' + inl(m[2]) + '</h1>'); }
+    else if (/^(-{3,}|\*{3,})$/.test(l.trim())) { flush(); out.push('<hr class="rv">'); } else para.push(l);
+  }
+  flush(); return out.join('');
+}
+async function getLetter(key) {                                   // la carta también viaja cifrada: sin la contraseña no se lee
+  try {
+    const j = await (await fetch('letter.json?t=' + Date.now(), { cache: 'no-store' })).json();
+    return new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(j.iv), additionalData: te.encode('letter') }, key, b64(j.ct)));
+  } catch (e) { return ''; }
+}
+function hearts() {
+  if (reduce) return; const env = $('env').getBoundingClientRect(), x0 = env.left + env.width / 2, y0 = env.top + env.height * .4;
+  for (let i = 0; i < 16; i++) {
+    const h = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); h.setAttribute('viewBox', '0 0 24 24'); h.setAttribute('class', 'heart'); h.style.left = x0 + 'px'; h.style.top = y0 + 'px';
+    h.innerHTML = '<path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 5 6.3 5c2 0 3.6 1.1 4.4 2.6.4.7.9.7 1.3 0C12.7 6.1 14.3 5 16.3 5 19.6 5 21.7 8.4 21.6 11.8 19.5 16.4 12 21 12 21z"/>'; document.body.appendChild(h);
+    const a = -Math.PI / 2 + rand(-1.2, 1.2), d = rand(140, 370), sc = rand(.6, 1.7);
+    h.animate([{ opacity: 0, transform: 'translate(0,0) scale(.2)' }, { opacity: 1, transform: `translate(${Math.cos(a) * d * .5}px,${Math.sin(a) * d * .5}px) scale(${sc})`, offset: .3 }, { opacity: 0, transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d - 60}px) scale(${sc * .8})` }],
+      { duration: rand(1700, 2600), delay: rand(0, 300), easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }).onfinish = () => h.remove();
+  }
+}
+function playLetter(body) {
+  const env = $('env'), paper = $('paper'), sheet = $('sheet'); if (!sheet.innerHTML) sheet.innerHTML = renderLetter(body);
+  const open = () => {
+    opening = false; reading = true; env.classList.remove('float'); env.classList.add('out'); paper.classList.remove('hide'); void paper.offsetWidth; paper.classList.add('show'); view();
+    [...sheet.querySelectorAll('.rv')].forEach((el, i) => played ? el.classList.add('in') : setTimeout(() => el.classList.add('in'), 650 + Math.min(i, 14) * 170));
+    played = true; setTimeout(() => sheet.focus({ preventScroll: true }), 1300);
+  };
+  if (reduce || played) { open(); return; }
+  setTimeout(() => { env.classList.add('open'); hearts(); burst(innerWidth / 2, innerHeight * .36, 22, 320); }, 150);   // se abre
+  setTimeout(() => env.classList.add('up'), 950);          // la carta asoma
+  setTimeout(open, 2300);                                  // y se despliega para leerla
+}
+
+/* ---------- tras la contraseña: dos opciones, ninguna obligatoria (descargar el programa / leer la carta) ---------- */
+let KEY = null, LETTER = null, opening = false, reading = false, played = false, dlState = 'idle', dlPct = 0;
+let envShown = false;
+function showEnv() {
+  if (envShown) return; envShown = true; const env = $('env'); $('stage').style.setProperty('--k', Math.min(1, innerWidth * .86 / 380).toFixed(3));
+  env.className = 'env'; void env.offsetWidth; env.classList.add('in'); setTimeout(() => { if (envShown && !opening && !reading) env.classList.add('float'); }, reduce ? 50 : 1550);
+}
+function view() {
+  const choosing = !!KEY && !opening && !reading;
+  $('choice').classList.toggle('on', choosing); $('show').classList.toggle('choosing', choosing); if (choosing) showEnv();
+  $('dl').classList.toggle('on', !!KEY && (reading || dlState !== 'idle'));
+  const b = $('bDl');
+  b.textContent = dlState === 'run' ? 'Descargando… ' + dlPct + '%' : dlState === 'done' ? 'Descargar otra vez' : dlState === 'err' ? 'Reintentar la descarga' : 'Descargar el programa';
+  b.disabled = dlState === 'run'; const idle = dlState === 'idle';
+  const txt = $('dltxt'), again = $('again');
+  txt.textContent = idle ? 'El programa está listo' : dlState === 'run' ? 'Descargando tu regalo… ' + dlPct + '%' : dlState === 'done' ? 'Listo, ya está en tus descargas' : 'Sin conexión.';
+  again.hidden = dlState === 'run'; again.textContent = idle ? 'Descargar' : dlState === 'done' ? 'Descargar otra vez' : 'Reintentar';
+  $('dl').classList.toggle('done', dlState === 'done'); $('dl').classList.toggle('run', dlState === 'run');
+}
+const bar = (p) => { dlPct = Math.floor(p * 100); $('bar').style.width = Math.max(6, Math.min(100, p * 100)) + '%'; view(); };
+async function startDownload() {
+  if (!KEY || dlState === 'run') return;
+  if (dlState === 'done' && last_url) { save(); return; }                  // ya descargado: solo lo vuelve a guardar
+  dlState = 'run'; bar(0);
+  try {
+    const blob = await download(KEY, bar);
+    last_url = URL.createObjectURL(blob); save(); dlState = 'done'; bar(1); live.textContent = 'Listo, tu regalo se ha descargado';
+    const r = $('bDl').getBoundingClientRect(); if (!reading && !opening) { burst(r.left + r.width / 2, r.top + r.height / 2, 24, 280); const pk = $('peek2'); pk.classList.remove('bob'); void pk.offsetWidth; pk.classList.add('cheer'); setTimeout(() => { pk.classList.remove('cheer'); pk.classList.add('bob'); }, 900); }
+  } catch (err) { dlState = 'err'; view(); }
+}
+function closeLetter() {
+  const paper = $('paper'); if (!reading) return; reading = false; paper.classList.remove('show'); paper.classList.add('hide');
+  envShown = false; $('env').className = 'env'; setTimeout(view, 350);
+}
+async function openLetter() {
+  if (opening || reading || !KEY) return; opening = true; view();
+  if (LETTER === null) LETTER = (await getLetter(KEY)) || '# Hola Nati ♥\n\nTe estaba esperando.';
+  playLetter(LETTER);
+}
+$('bDl').onclick = startDownload; $('again').onclick = startDownload; $('bEnv').onclick = openLetter; $('pclose').onclick = closeLetter;
+addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLetter(); });
+$('f').onsubmit = async (e) => {
+  e.preventDefault(); if (root.classList.contains('busy') || KEY) return;
+  const pw = $('pw').value; $('pw').disabled = true; $('pill').classList.remove('bad'); note('');
+  root.classList.add('busy'); $('fill').style.width = ''; $('fill').classList.add('wait');
+  try { KEY = await unlock(pw); } catch (err) { fail('', true); return; }
+  root.classList.add('reading'); root.classList.remove('busy'); burst(innerWidth / 2, innerHeight * .62, 30, 300);
+  setTimeout(view, 500);                                          // aparecen las dos opciones; nada empieza solo
+};
+</script></body></html>
